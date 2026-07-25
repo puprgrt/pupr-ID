@@ -1,4 +1,5 @@
-import { Bell, Search, Globe, Moon, LayoutGrid } from "lucide-react";
+import { Bell, Search, Globe, Moon, LayoutGrid, LogOut } from "lucide-react";
+import { logout } from "@/app/login/actions";
 
 export default function Header() {
   return (
@@ -31,6 +32,11 @@ export default function Header() {
         <button className="p-2 rounded-full hover:bg-white/10 text-slate-300 hover:text-white transition-colors">
           <LayoutGrid className="w-5 h-5" />
         </button>
+        <form action={logout}>
+          <button type="submit" className="p-2 rounded-full hover:bg-rose-500/20 text-slate-300 hover:text-rose-400 transition-colors tooltip" title="Logout">
+            <LogOut className="w-5 h-5" />
+          </button>
+        </form>
       </div>
     </header>
   );
