@@ -1,15 +1,39 @@
-import { FileText, Map, Info, LogOut, ExternalLink, ShieldAlert } from "lucide-react";
+import { FileText, Map, Info, LogOut, ExternalLink, ShieldAlert, Globe } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
-const publicApps = [
-  { name: "LAIKA", desc: "Layanan Adminduk (Pendaftaran & Informasi Publik)", icon: "📄", url: "#", color: "text-[#00C853]" },
-  { name: "Portal Informasi", desc: "Berita & Pengumuman Dinas PUPR Garut", icon: "📰", url: "#", color: "text-[#FFDA00]" },
-  { name: "GIS Publik", desc: "Peta Tata Ruang Terbuka", icon: "🗺️", url: "#", color: "text-[#56CCF2]" },
-];
+interface Application {
+  id: string;
+  name: string;
+  description: string;
+  app_url?: string;
+  icon_url?: string;
+}
 
 export default function GuestDashboard() {
   const router = useRouter();
+  const [publicApps, setPublicApps] = useState<Application[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchApps = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('applications')
+        .select('*')
+        .eq('category', 'Layanan Publik')
+        .eq('status', 'online')
+        .order('created_at', { ascending: true });
+
+      if (!error && data) {
+        setPublicApps(data);
+      }
+      setIsLoading(false);
+    };
+
+    fetchApps();
+  }, []);
 
   const handleSignOut = async () => {
     const supabase = createClient();
@@ -62,24 +86,38 @@ export default function GuestDashboard() {
       {/* Public Apps Grid */}
       <div>
         <h3 className="text-xl font-poppins font-semibold text-white mb-6">Layanan Publik</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {publicApps.map((app, idx) => (
-            <a href={app.url} key={idx} className="block group">
-              <div className="glass-card p-6 rounded-2xl border border-white/10 hover:border-white/30 transition-all duration-300 h-full flex flex-col hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#1E5EFF]/10">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="text-4xl bg-white/5 p-4 rounded-2xl border border-white/10 shadow-inner group-hover:scale-110 transition-transform duration-300">
-                    {app.icon}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-10">
+            <div className="w-8 h-8 border-4 border-[#56CCF2]/30 border-t-[#56CCF2] rounded-full animate-spin"></div>
+          </div>
+        ) : publicApps.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {publicApps.map((app) => (
+              <a href={app.app_url || "#"} target={app.app_url ? "_blank" : "_self"} rel="noreferrer" key={app.id} className="block group">
+                <div className="glass-card p-6 rounded-2xl border border-white/10 hover:border-white/30 transition-all duration-300 h-full flex flex-col hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#1E5EFF]/10">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="w-14 h-14 bg-white/5 rounded-2xl border border-white/10 shadow-inner group-hover:scale-110 transition-transform duration-300 flex items-center justify-center overflow-hidden">
+                      {app.icon_url ? (
+                        <img src={app.icon_url} alt={app.name} className="w-full h-full object-contain p-2" />
+                      ) : (
+                        <Globe className="w-7 h-7 text-[#56CCF2]" />
+                      )}
+                    </div>
+                    <ExternalLink className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors" />
                   </div>
-                  <ExternalLink className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors" />
+                  <div className="mt-auto">
+                    <h4 className="font-poppins font-bold text-lg text-white group-hover:text-[#56CCF2] transition-colors mb-2">{app.name}</h4>
+                    <p className="text-sm text-slate-400 line-clamp-2">{app.description}</p>
+                  </div>
                 </div>
-                <div className="mt-auto">
-                  <h4 className="font-poppins font-bold text-lg text-white group-hover:text-[#56CCF2] transition-colors mb-2">{app.name}</h4>
-                  <p className="text-sm text-slate-400 line-clamp-2">{app.desc}</p>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div className="py-10 text-center glass-panel rounded-2xl">
+            <p className="text-slate-400">Belum ada layanan publik yang online saat ini.</p>
+          </div>
+        )}
       </div>
 
     </div>

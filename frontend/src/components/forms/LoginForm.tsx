@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { login } from '@/app/login/actions'
+import { Turnstile } from '@marsidev/react-turnstile'
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>(null)
@@ -55,6 +56,14 @@ export default function LoginForm() {
       <div className="flex items-center gap-2 pt-2 pb-4">
         <input type="checkbox" id="remember" className="rounded border-white/20 bg-black/20 text-[#FFDA00] focus:ring-[#FFDA00]/50 h-4 w-4" />
         <label htmlFor="remember" className="text-sm text-slate-300 cursor-pointer select-none">Ingat saya di peramban ini</label>
+      </div>
+
+      {/* Cloudflare Turnstile */}
+      <div className="flex justify-center mt-2">
+        <Turnstile 
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'} 
+          options={{ theme: 'dark' }}
+        />
       </div>
 
       <button 
