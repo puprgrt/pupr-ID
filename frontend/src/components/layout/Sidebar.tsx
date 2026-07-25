@@ -12,6 +12,8 @@ import {
   Settings 
 } from "lucide-react";
 
+import { createClient } from "@/utils/supabase/server";
+
 const navItems = [
   { icon: Home, label: "Dashboard", href: "/dashboard" },
   { icon: Grid, label: "Applications", href: "/dashboard/apps" },
@@ -25,7 +27,13 @@ const navItems = [
   { icon: Settings, label: "Settings", href: "/dashboard/settings" },
 ];
 
-export default function Sidebar() {
+export default async function Sidebar() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  const email = user?.email || "guest@pupr.garut.id";
+  const role = user?.app_metadata?.role || "Guest";
+  const name = email.split('@')[0];
   return (
     <aside className="w-72 h-[calc(100vh-2rem)] glass-panel m-4 flex flex-col p-4 transition-all duration-300">
       <div className="flex items-center gap-3 px-2 py-4 mb-6 border-b border-white/10 pb-6">
@@ -55,11 +63,11 @@ export default function Sidebar() {
       <div className="mt-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-slate-700 overflow-hidden border-2 border-[#FFDA00]">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Enjang" alt="User Avatar" className="w-full h-full object-cover" />
+            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`} alt="User Avatar" className="w-full h-full object-cover" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-white truncate">Enjang Wahyudin</p>
-            <p className="text-xs text-[#FFDA00] truncate font-medium">Administrator</p>
+            <p className="text-sm font-semibold text-white truncate capitalize">{name}</p>
+            <p className="text-xs text-[#FFDA00] truncate font-medium">{role}</p>
           </div>
         </div>
       </div>
