@@ -25,6 +25,8 @@ export async function createApplication(formData: FormData) {
   const description = formData.get("description") as string;
   const category = formData.get("category") as string;
   const status = formData.get("status") as string;
+  const app_url = formData.get("app_url") as string;
+  const icon_url = formData.get("icon_url") as string;
   
   // Random color gradient for visual variety
   const colors = [
@@ -45,6 +47,8 @@ export async function createApplication(formData: FormData) {
         description,
         category,
         status,
+        app_url,
+        icon_url,
         color_gradient: randomColor,
         users_count: Math.floor(Math.random() * 500) // Mock initial users
       }
@@ -56,6 +60,50 @@ export async function createApplication(formData: FormData) {
   }
 
   // Merender ulang halaman agar data baru langsung muncul
+  revalidatePath("/dashboard/apps");
+  return { success: true };
+}
+
+export async function updateApplication(formData: FormData) {
+  const supabase = await createClient();
+  
+  const id = formData.get("id") as string;
+  if (!id) return { success: false, error: "ID aplikasi tidak ditemukan" };
+
+  const name = formData.get("name") as string;
+  const description = formData.get("description") as string;
+  const category = formData.get("category") as string;
+  const status = formData.get("status") as string;
+  const app_url = formData.get("app_url") as string;
+  const icon_url = formData.get("icon_url") as string;
+
+  const { error } = await supabase
+    .from("applications")
+    .update({ name, description, category, status, app_url, icon_url, updated_at: new Date().toISOString() })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error updating application:", error);
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath("/dashboard/apps");
+  return { success: true };
+}
+
+export async function deleteApplication(id: string) {
+  const supabase = await createClient();
+  
+  const { error } = await supabase
+    .from("applications")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting application:", error);
+    return { success: false, error: error.message };
+  }
+
   revalidatePath("/dashboard/apps");
   return { success: true };
 }
