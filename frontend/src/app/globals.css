@@ -39,50 +39,44 @@
   --animate-blob: blob 7s infinite;
 }
 
-/* Base Variables for Shadcn */
-:root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 221.2 83.2% 53.3%;
-  --radius: 0.5rem;
-}
-
-.dark {
-  --background: 222.2 84% 4.9%;
+/* Base Variables for Shadcn - Dark Blue Glass Theme */
+:root, .dark {
+  /* Background: #071A3D */
+  --background: 219 80% 13%;
   --foreground: 210 40% 98%;
-  --card: 222.2 84% 4.9%;
+
+  /* Glass Card Background: Soft transparent navy */
+  --card: 221 72% 33%; 
   --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
+
+  --popover: 219 80% 13%;
   --popover-foreground: 210 40% 98%;
-  --primary: 217.2 91.2% 59.8%;
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 217.2 32.6% 17.5%;
+
+  /* Primary: Royal Blue #1E5EFF */
+  --primary: 223 100% 56%;
+  --primary-foreground: 210 40% 98%;
+
+  /* Secondary: Navy #173D90 */
+  --secondary: 221 72% 33%;
   --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
+
+  /* Muted */
+  --muted: 221 72% 20%;
   --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
+
+  /* Accent: Sky Blue #56CCF2 */
+  --accent: 195 87% 64%;
+  --accent-foreground: 219 80% 13%;
+
+  /* Destructive: Danger #FF4D6D */
+  --destructive: 349 100% 65%;
   --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
+
+  /* Border */
+  --border: 221 72% 33%;
+  --input: 221 72% 33%;
+  --ring: 223 100% 56%;
+  --radius: 1.5rem; /* 24px rounded corners */
 }
 
 @keyframes blob {
@@ -95,12 +89,36 @@
 .animation-delay-2000 {
   animation-delay: 2s;
 }
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    /* Gradient Background as specified */
+    background: linear-gradient(135deg, #071A3D 0%, #123B7A 50%, #2057D6 100%);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/10 backdrop-blur-[30px] border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-[24px];
+  }
+  .glass-card {
+    @apply bg-[#173D90]/40 backdrop-blur-[25px] border border-white/10 shadow-lg rounded-[24px] transition-all duration-300;
+  }
+  .glass-card:hover {
+    @apply -translate-y-2 shadow-[0_12px_40px_0_rgba(30,94,255,0.4)];
+  }
+  .glass-button {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-[24px] hover:bg-white/20 transition-all duration-300 active:scale-95;
+  }
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#56CCF2] to-[#1E5EFF];
   }
 }
