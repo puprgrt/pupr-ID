@@ -30,8 +30,8 @@ export default function Sidebar() {
     <aside className="w-72 h-[calc(100vh-2rem)] glass-panel m-4 flex flex-col p-4 transition-all duration-300">
       <div className="flex items-center gap-3 px-2 py-4 mb-6 border-b border-white/10 pb-6">
         <div className="flex gap-1">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Lambang_Kabupaten_Garut.png" alt="Garut" className="w-8 h-8 object-contain drop-shadow-md" />
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Logo_PUPR.png" alt="PUPR" className="w-9 h-9 object-contain drop-shadow-md" />
+          <img src="/Lambang_Kabupaten_Garut.png" alt="Garut" className="w-8 h-8 object-contain drop-shadow-md" />
+          <img src="/Logo_PU_(RGB).jpg" alt="PUPR" className="w-9 h-9 object-contain drop-shadow-md" />
         </div>
         <div className="ml-1">
           <h1 className="font-poppins font-bold text-lg text-white leading-none">PUPR<span className="text-[#FFDA00]">ID</span></h1>

@@ -92,10 +92,10 @@ export default function LoginPage() {
           {/* Logos */}
           <div className="flex items-center gap-4 mb-8">
             <div className="w-14 h-14 bg-white/10 rounded-full p-2.5 backdrop-blur-sm border border-white/10 shadow-lg">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Lambang_Kabupaten_Garut.png" alt="Logo Garut" className="w-full h-full object-contain" />
+              <img src="/Lambang_Kabupaten_Garut.png" alt="Logo Garut" className="w-full h-full object-contain" />
             </div>
             <div className="w-16 h-16 bg-white/10 rounded-full p-2.5 backdrop-blur-sm border border-white/10 shadow-lg">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Logo_PUPR.png" alt="Logo PUPR" className="w-full h-full object-contain" />
+              <img src="/Logo_PU_(RGB).jpg" alt="Logo PUPR" className="w-full h-full object-contain" />
             </div>
           </div>
 
