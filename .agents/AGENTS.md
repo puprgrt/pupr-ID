@@ -12,10 +12,10 @@ Setiap kali berinteraksi dan membuat kode untuk proyek ini, kamu **WAJIB** mengi
 
 ## 2. Teknologi yang Wajib Digunakan (Tech Stack Enforced)
 Jika diminta untuk membuat atau memodifikasi kode, pastikan sesuai dengan stack berikut:
-- **Identity Server:** Keycloak (sebagai *Core IAM*).
+- **Identity Server:** Supabase Auth (sebagai *Core IAM*).
 - **Frontend SSO & Dashboard:** Next.js (App Router), React, TypeScript, Tailwind CSS, dan Shadcn UI.
 - **Backend / API Gateway:** Java (Spring Boot) dan/atau Python (FastAPI).
-- **Database:** PostgreSQL (Relational) dan Redis (Session/Cache).
+- **Database:** PostgreSQL via Supabase.
 - **Standar Keamanan:** OAuth 2.1, OpenID Connect (OIDC), JWT, PKCE, SAML 2.0.
 
 ## 3. Aturan Penulisan Kode (Coding Guidelines)
@@ -30,7 +30,8 @@ Jika diminta untuk membuat atau memodifikasi kode, pastikan sesuai dengan stack 
 - Catat semua aktivitas menggunakan *Audit Trail* (Logging terpusat).
 
 ### Infrastruktur & DevOps
-- Semua layanan (Frontend, API, Keycloak, PostgreSQL, Redis) harus dapat dijalankan menggunakan **Docker (docker-compose)** untuk lingkungan *development*.
+- Deployment backend menggunakan **FastAPI Cloud**, frontend menggunakan **Vercel** atau platform serupa.
+- **TIDAK MENGGUNAKAN DOCKER**. File `docker-compose.yml` dilarang digunakan untuk lingkungan *development* karena integrasi langsung ke platform cloud.
 
 ## 4. Keamanan & Role Based Access Control (RBAC)
 - Struktur Role dasar: `Super Admin` -> `Administrator` -> `Kepala Dinas` -> `Kabid` -> `Kasi` -> `Operator` -> `Surveyor` -> `Guest`.
@@ -39,7 +40,7 @@ Jika diminta untuk membuat atau memodifikasi kode, pastikan sesuai dengan stack 
 
 ## 5. Langkah Kerja yang Harus Diingat
 Setiap kali diminta mengembangkan fitur baru, ikuti urutan pemikiran ini:
-1. **Pahami Arsitektur:** Di mana fitur ini berada? Apakah di sisi Frontend, API Gateway, atau konfigurasi Keycloak?
+1. **Pahami Arsitektur:** Di mana fitur ini berada? Apakah di sisi Frontend, API Gateway, atau Supabase?
 2. **Keamanan Dahulu:** Apakah data/API ini sensitif? Bagaimana cara memverifikasinya?
 3. **Efisiensi:** Apakah kode ini sudah efisien dan *scalable* untuk ribuan pengguna (sampai 12.000+ pengguna)?
 4. **Implementasi & Uji:** Tuliskan kode yang siap dijalankan dan berikan panduan cara *testing*-nya.
