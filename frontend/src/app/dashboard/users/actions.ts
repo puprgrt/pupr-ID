@@ -13,8 +13,7 @@ export async function getUsers() {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error("Error fetching users:", error);
-    return { error: error?.message || error?.details || JSON.stringify(error) || "Terjadi kesalahan yang tidak diketahui saat mengambil data profil." };
+    return { error: error?.message || error?.details || JSON.stringify(error) || "Terjadi kesalahan saat mengambil data." };
   }
 
   return { data };
