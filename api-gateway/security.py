@@ -6,10 +6,18 @@ from pydantic import BaseModel
 from typing import Optional
 
 import os
+import sys
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
+limiter = Limiter(key_func=get_remote_address)
 
 # Konfigurasi JWT Supabase
 # Ambil dari dashboard Supabase: Settings -> API -> JWT Secret
-SECRET_KEY = os.getenv("SUPABASE_JWT_SECRET", "simulasi_rahasia_pupr_garut")
+SECRET_KEY = os.getenv("SUPABASE_JWT_SECRET")
+if not SECRET_KEY:
+    print("FATAL ERROR: SUPABASE_JWT_SECRET is not set. Refusing to start for security reasons.")
+    sys.exit(1)
 ALGORITHM = "HS256"
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -26,7 +34,12 @@ def verify_token(token: str = Depends(oauth2_scheme)):
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM], options={"verify_aud": False})
+        payload = jwt.decode(
+            token, 
+            SECRET_KEY, 
+            algorithms=[ALGORITHM], 
+            audience="authenticated"
+        )
         username: str = payload.get("sub")
         
         # Di Supabase, role kustom biasanya disimpan di app_metadata atau user_metadata

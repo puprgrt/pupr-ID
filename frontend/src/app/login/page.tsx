@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { QrCode, Smartphone, Info, ShieldCheck, Map, Building2, HardHat, FileText, ArrowRight } from "lucide-react";
 import LoginForm from "@/components/forms/LoginForm";
-import GoogleLoginButton from "@/components/forms/GoogleLoginButton";
+import KeycloakLoginButton from "@/components/forms/KeycloakLoginButton";
 
 export default function LoginPage() {
   return (
@@ -116,8 +116,8 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Google Login */}
-            <GoogleLoginButton />
+            {/* Keycloak SSO Login */}
+            <KeycloakLoginButton />
 
             {/* Other Options */}
             <div className="grid grid-cols-2 gap-4">

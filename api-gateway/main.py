@@ -1,9 +1,12 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+import os
+import time
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict
-from security import verify_token, require_role, TokenData
-import time
+from security import verify_token, require_role, TokenData, limiter
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
 app = FastAPI(
     title="PUPR-ID API Gateway",
@@ -11,12 +14,16 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Konfigurasi CORS (Sesuaikan dengan origin Next.js Anda)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# Konfigurasi CORS
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], 
+    allow_origins=[FRONTEND_URL], 
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -72,7 +79,8 @@ def get_applications(current_user: TokenData = Depends(verify_token)):
 
 # Simulasi Token Generator (Hanya untuk testing lokal tanpa Keycloak)
 @app.post("/token")
-def login_for_access_token():
+@limiter.limit("5/minute")
+def login_for_access_token(request: Request):
     from jose import jwt
     from security import SECRET_KEY, ALGORITHM
     import datetime

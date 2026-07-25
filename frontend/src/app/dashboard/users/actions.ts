@@ -22,6 +22,16 @@ export async function getUsers() {
 export async function updateUserRole(userId: string, newRole: string) {
   const supabase = await createClient();
   
+  // Verifikasi Role (RBAC) - Pastikan hanya Administrator / Super Admin yang bisa
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  if (userError || !user) {
+    return { error: "Unauthorized" };
+  }
+  const currentRole = user.app_metadata?.role || "Guest";
+  if (currentRole !== "Administrator" && currentRole !== "Super Admin") {
+    return { error: "Forbidden: Anda tidak memiliki izin untuk mengubah role pengguna." };
+  }
+
   // Karena app_metadata (auth.users) dan tabel public.profiles harus disinkronkan,
   // dan hanya admin yang boleh melakukan ini, kita panggil fungsi RPC yang sudah kita buat 
   // di database menggunakan SECURITY DEFINER.
