@@ -54,13 +54,18 @@ export default function AdminDashboard() {
       if (oidcApps && oidcApps.length > 0) {
         const apps = oidcApps.map((app: any, idx: number) => {
           let targetUrl = app.app_url || app.redirect_uri || "#";
-          if (targetUrl !== "#" && session?.access_token) {
+          
+          // Cek jika ini adalah aplikasi SIMBG (Intersep ke halaman Bridge Guest)
+          if (app.name?.toLowerCase().includes('simbg')) {
+             targetUrl = "/simbg-guest";
+          } else if (targetUrl !== "#" && session?.access_token) {
             const separator = targetUrl.includes('?') ? '&' : '?';
             targetUrl = `${targetUrl}${separator}sso_token=${session.access_token}`;
           }
+          
           return {
             name: app.name,
-            desc: `Redirect: ${app.redirect_uri}`,
+            desc: app.name?.toLowerCase().includes('simbg') ? 'Auto-Login Guest Mode' : `Redirect: ${app.redirect_uri}`,
             app_url: targetUrl,
             users: app.status === 'active' ? "Active" : "Inactive",
             icon: idx % 2 === 0 ? "🏢" : "🌐",
