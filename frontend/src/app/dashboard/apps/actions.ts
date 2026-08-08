@@ -56,6 +56,9 @@ export async function createApplication(formData: FormData) {
 
   if (error) {
     console.error("Error creating application:", error);
+    if (error.code === '42P01' || error.message.includes('relation "public.applications" does not exist')) {
+      return { success: false, error: "Tabel 'applications' belum dibuat di Supabase. Silakan jalankan script SQL yang diberikan." };
+    }
     return { success: false, error: error.message };
   }
 
