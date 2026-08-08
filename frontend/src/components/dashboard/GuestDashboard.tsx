@@ -98,7 +98,14 @@ export default function GuestDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {publicApps.map((app) => {
               let targetUrl = app.app_url || "#";
-              if (targetUrl !== "#" && session?.access_token) {
+              
+              // Cek jika ini adalah aplikasi SIMBG (Intersep ke halaman Bridge Guest)
+              const isSimbg = (app.name?.toLowerCase().includes('simbg')) || 
+                              (app.app_url?.toLowerCase().includes('simbg'));
+
+              if (isSimbg) {
+                 targetUrl = "/simbg-guest";
+              } else if (targetUrl !== "#" && session?.access_token) {
                 const separator = targetUrl.includes('?') ? '&' : '?';
                 targetUrl = `${targetUrl}${separator}sso_token=${session.access_token}`;
               }

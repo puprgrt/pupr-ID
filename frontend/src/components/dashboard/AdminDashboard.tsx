@@ -56,7 +56,11 @@ export default function AdminDashboard() {
           let targetUrl = app.app_url || app.redirect_uri || "#";
           
           // Cek jika ini adalah aplikasi SIMBG (Intersep ke halaman Bridge Guest)
-          if (app.name?.toLowerCase().includes('simbg')) {
+          const isSimbg = (app.name?.toLowerCase().includes('simbg')) || 
+                          (app.app_url?.toLowerCase().includes('simbg')) || 
+                          (app.redirect_uri?.toLowerCase().includes('simbg'));
+
+          if (isSimbg) {
              targetUrl = "/simbg-guest";
           } else if (targetUrl !== "#" && session?.access_token) {
             const separator = targetUrl.includes('?') ? '&' : '?';
