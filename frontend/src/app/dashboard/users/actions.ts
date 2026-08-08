@@ -42,6 +42,9 @@ export async function updateUserRole(userId: string, newRole: string) {
 
   if (error) {
     console.error("Error updating user role:", error);
+    if (error.message.includes("Could not find the function") || error.message.includes("function admin_set_user_role does not exist")) {
+      return { error: "Fungsi admin_set_user_role belum diinstal di Database Supabase. Harap hubungi pengembang." };
+    }
     return { error: error.message };
   }
 
