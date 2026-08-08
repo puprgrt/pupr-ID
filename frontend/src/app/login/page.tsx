@@ -89,7 +89,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md relative z-10">
 
           {/* Logos */}
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex items-center justify-center gap-4 mb-8">
             <div className="w-14 h-14 bg-white/10 rounded-full p-2.5 backdrop-blur-sm border border-white/10 shadow-lg">
               <img src="/Lambang_Kabupaten_Garut.png" alt="Logo Garut" className="w-full h-full object-contain" />
             </div>
@@ -98,8 +98,8 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="mb-8">
-            <h2 className="text-3xl font-poppins font-bold text-white tracking-wide">PUPR<span className="text-[#FFDA00]">ID</span></h2>
+          <div className="mb-8 text-center">
+            <img src="/logo-puprID.png" alt="PUPR-ID" className="h-60 mx-auto w-auto mb-4 object-contain" />
             <p className="text-sm text-slate-400 mt-2">Masukkan kredensial Anda untuk masuk ke sistem terpusat DPUPR Kab. Garut.</p>
           </div>
 

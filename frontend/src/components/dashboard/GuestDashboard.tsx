@@ -54,10 +54,13 @@ export default function GuestDashboard() {
         <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#56CCF2]/20 blur-[100px] rounded-full mix-blend-screen pointer-events-none"></div>
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <div className="max-w-xl">
+          <div className="max-w-xl flex flex-col items-center text-center mx-auto md:mx-0">
             <h2 className="text-3xl md:text-4xl font-poppins font-bold text-white mb-4">
-              Selamat Datang di <span className="text-[#FFDA00]">PUPR-ID</span>
+              Selamat Datang di
             </h2>
+            <div className="w-full flex justify-center mb-6">
+              <img src="/logo-puprID.png" alt="PUPR-ID" className="h-40 md:h-28 w-auto object-contain drop-shadow-lg" />
+            </div>
             <p className="text-slate-300 leading-relaxed text-lg">
               Portal Layanan Terpadu Dinas Pekerjaan Umum dan Penataan Ruang Kabupaten Garut. Silakan pilih layanan publik yang tersedia di bawah ini.
             </p>

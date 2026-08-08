@@ -37,12 +37,11 @@ export default async function Sidebar() {
   return (
     <aside className="w-72 h-[calc(100vh-2rem)] glass-panel m-4 flex flex-col p-4 transition-all duration-300">
       <div className="flex items-center gap-3 px-2 py-4 mb-6 border-b border-white/10 pb-6">
-        <div className="flex gap-1">
+        <div className="flex gap-1 items-center">
           <img src="/Lambang_Kabupaten_Garut.png" alt="Garut" className="w-8 h-8 object-contain drop-shadow-md" />
-          <img src="/Logo_PU_(RGB).jpg" alt="PUPR" className="w-9 h-9 object-contain drop-shadow-md" />
+          <img src="/logo-puprID.png" alt="PUPR-ID" className="h-8 w-auto object-contain" />
         </div>
         <div className="ml-1">
-          <h1 className="font-poppins font-bold text-lg text-white leading-none">PUPR<span className="text-[#FFDA00]">ID</span></h1>
           <p className="text-[10px] text-[#56CCF2] uppercase tracking-wider mt-1">Kabupaten Garut</p>
         </div>
       </div>

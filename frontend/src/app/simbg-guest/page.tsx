@@ -58,8 +58,8 @@ export default function SimbgGuestBridge() {
         <div className="flex justify-center mb-6">
           <div className="relative">
             <div className="absolute inset-0 bg-blue-500 blur-xl opacity-20 rounded-full"></div>
-            <div className="bg-[#0A1628] border border-white/10 p-4 rounded-2xl relative shadow-2xl">
-              <Building2 className="w-10 h-10 text-[#FFDA00]" />
+            <div className="bg-[#0A1628] border border-white/10 p-4 rounded-2xl relative shadow-2xl flex items-center justify-center">
+              <img src="/logo-puprID.png" alt="PUPR-ID" className="h-10 w-auto object-contain" />
             </div>
           </div>
         </div>
