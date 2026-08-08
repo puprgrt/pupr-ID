@@ -34,7 +34,8 @@ export default function AdminDashboard() {
         { count: userCount },
         { data: oidcApps, count: oidcCount },
         { count: webhookCount },
-        { data: profiles }
+        { data: profiles },
+        { data: { session } }
       ] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('oidc_clients').select('*', { count: 'exact' }).order('created_at', { ascending: false }),
