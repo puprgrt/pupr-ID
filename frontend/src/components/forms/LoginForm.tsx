@@ -68,7 +68,7 @@ export default function LoginForm() {
       {/* Cloudflare Turnstile */}
       <div className="flex justify-center mt-2">
         <Turnstile 
-          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'} 
+          siteKey={process.env.NODE_ENV === 'development' ? '1x00000000000000000000AA' : (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA')} 
           options={{ theme: 'dark' }}
           onSuccess={(token) => setTurnstileToken(token)}
         />
