@@ -55,7 +55,8 @@ export default function AdminDashboard() {
         const apps = oidcApps.map((app: any, idx: number) => {
           let targetUrl = app.app_url || app.redirect_uri || "#";
           if (targetUrl !== "#" && session?.access_token) {
-            targetUrl = `${targetUrl}#sso_token=${session.access_token}`;
+            const separator = targetUrl.includes('?') ? '&' : '?';
+            targetUrl = `${targetUrl}${separator}sso_token=${session.access_token}`;
           }
           return {
             name: app.name,

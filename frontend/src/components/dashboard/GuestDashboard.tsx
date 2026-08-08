@@ -99,7 +99,8 @@ export default function GuestDashboard() {
             {publicApps.map((app) => {
               let targetUrl = app.app_url || "#";
               if (targetUrl !== "#" && session?.access_token) {
-                targetUrl = `${targetUrl}#sso_token=${session.access_token}`;
+                const separator = targetUrl.includes('?') ? '&' : '?';
+                targetUrl = `${targetUrl}${separator}sso_token=${session.access_token}`;
               }
               return (
               <a href={targetUrl} target={app.app_url ? "_blank" : "_self"} rel="noreferrer" key={app.id} className="block group">
