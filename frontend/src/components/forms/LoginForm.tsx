@@ -8,10 +8,17 @@ import { Turnstile } from '@marsidev/react-turnstile'
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState<string>('')
   const [isPending, startTransition] = useTransition()
 
   const handleSubmit = async (formData: FormData) => {
     setError(null)
+    
+    // Inject turnstile token manually into FormData if it's not present
+    if (!formData.get('cf-turnstile-response') && turnstileToken) {
+      formData.append('cf-turnstile-response', turnstileToken)
+    }
+
     startTransition(async () => {
       const result = await login(formData)
       if (result?.error) {
@@ -63,6 +70,7 @@ export default function LoginForm() {
         <Turnstile 
           siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'} 
           options={{ theme: 'dark' }}
+          onSuccess={(token) => setTurnstileToken(token)}
         />
       </div>
 

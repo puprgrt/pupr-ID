@@ -5,19 +5,19 @@ import GoogleLoginButton from "@/components/forms/GoogleLoginButton";
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row overflow-hidden bg-[#071A3D]">
-      
+
       {/* ======================= */}
       {/* LEFT PANEL (Informative) */}
       {/* ======================= */}
       <div className="relative hidden lg:flex lg:w-7/12 flex-col justify-between p-12 overflow-hidden bg-[#123B7A]">
         {/* Background Layer */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-60"
           style={{ backgroundImage: `url('https://images.unsplash.com/photo-1624619934399-52e802a46698?q=80&w=2000&auto=format&fit=crop')` }}
         ></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#071A3D] via-[#071A3D]/80 to-transparent"></div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+CjxwYXRoIGQ9Ik0wIDBoODB2ODBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgNDBjMjAgMCAyMC00MCA0MC00MHMyMCA0MCA0MCA0MCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==')] opacity-40"></div>
-        
+
         {/* Glowing Blobs for accent */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#FFDA00]/10 blur-[120px] rounded-full mix-blend-screen"></div>
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#1E5EFF]/20 blur-[150px] rounded-full mix-blend-screen"></div>
@@ -39,7 +39,7 @@ export default function LoginPage() {
           <p className="text-lg text-slate-300 leading-relaxed mb-10 max-w-xl">
             Akses seluruh sistem informasi terpadu Dinas Pekerjaan Umum dan Penataan Ruang (DPUPR) Kabupaten Garut hanya dengan satu identitas digital.
           </p>
-          
+
           {/* Ecosystem Showcase */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="flex flex-col items-center p-4 rounded-2xl glass-card bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-default">
@@ -82,12 +82,12 @@ export default function LoginPage() {
       {/* RIGHT PANEL (Login Form) */}
       {/* ======================= */}
       <div className="w-full lg:w-5/12 flex items-center justify-center p-6 sm:p-12 relative bg-[#071A3D]">
-        
+
         {/* Subtle Background Elements on Right side */}
         <div className="absolute top-0 right-0 w-full h-1/2 bg-gradient-to-b from-[#123B7A]/30 to-transparent pointer-events-none"></div>
 
         <div className="w-full max-w-md relative z-10">
-          
+
           {/* Logos */}
           <div className="flex items-center gap-4 mb-8">
             <div className="w-14 h-14 bg-white/10 rounded-full p-2.5 backdrop-blur-sm border border-white/10 shadow-lg">
@@ -132,12 +132,12 @@ export default function LoginPage() {
           </div>
 
           <p className="text-center text-xs text-slate-500 mt-12">
-            &copy; 2024 Dinas Pekerjaan Umum dan Penataan Ruang<br/>Kabupaten Garut.
+            &copy; 2026 Dinas Pekerjaan Umum dan Penataan Ruang<br />Kabupaten Garut.
           </p>
 
         </div>
       </div>
-      
+
     </div>
   );
 }
