@@ -39,7 +39,8 @@ export default function AdminDashboard() {
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('oidc_clients').select('*', { count: 'exact' }).order('created_at', { ascending: false }),
         supabase.from('webhooks').select('*', { count: 'exact', head: true }),
-        supabase.from('profiles').select('id, full_name, email, created_at').order('created_at', { ascending: false }).limit(5)
+        supabase.from('profiles').select('id, full_name, email, created_at').order('created_at', { ascending: false }).limit(5),
+        supabase.auth.getSession()
       ]);
 
       setStats({
@@ -50,13 +51,20 @@ export default function AdminDashboard() {
 
       // Format OIDC Apps for Bento Launcher
       if (oidcApps && oidcApps.length > 0) {
-        const apps = oidcApps.map((app: any, idx: number) => ({
-          name: app.name,
-          desc: `Redirect: ${app.redirect_uri}`,
-          users: app.status === 'active' ? "Active" : "Inactive",
-          icon: idx % 2 === 0 ? "🏢" : "🌐",
-          colSpan: idx % 3 === 0 ? "md:col-span-2" : "md:col-span-1"
-        }));
+        const apps = oidcApps.map((app: any, idx: number) => {
+          let targetUrl = app.app_url || app.redirect_uri || "#";
+          if (targetUrl !== "#" && session?.access_token) {
+            targetUrl = `${targetUrl}#sso_token=${session.access_token}`;
+          }
+          return {
+            name: app.name,
+            desc: `Redirect: ${app.redirect_uri}`,
+            app_url: targetUrl,
+            users: app.status === 'active' ? "Active" : "Inactive",
+            icon: idx % 2 === 0 ? "🏢" : "🌐",
+            colSpan: idx % 3 === 0 ? "md:col-span-2" : "md:col-span-1"
+          };
+        });
         setBentoApps(apps);
 
         // Map to Pie Chart
@@ -210,7 +218,7 @@ export default function AdminDashboard() {
                </div>
             ) : (
               bentoApps.map((app, idx) => (
-                <div key={idx} className={`glass-card p-5 group cursor-pointer flex flex-col justify-between border border-white/10 ${app.colSpan}`}>
+                <a href={app.app_url} target="_blank" rel="noreferrer" key={idx} className={`glass-card p-5 group cursor-pointer flex flex-col justify-between border border-white/10 ${app.colSpan}`}>
                   <div className="flex justify-between items-start mb-4">
                     <div className="text-3xl bg-white/5 p-3 rounded-2xl border border-white/10 group-hover:scale-110 group-hover:border-[#FFDA00]/50 transition-all duration-300 shadow-lg">
                       {app.icon}
@@ -224,7 +232,7 @@ export default function AdminDashboard() {
                     <h3 className="font-poppins font-bold text-white text-lg group-hover:text-[#FFDA00] transition-colors">{app.name}</h3>
                     <p className="text-xs text-slate-400 mt-1 line-clamp-1">{app.desc}</p>
                   </div>
-                </div>
+                </a>
               ))
             )}
           </div>

@@ -14,6 +14,7 @@ interface Application {
 export default function GuestDashboard() {
   const router = useRouter();
   const [publicApps, setPublicApps] = useState<Application[]>([]);
+  const [session, setSession] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +26,9 @@ export default function GuestDashboard() {
         .eq('category', 'Layanan Publik')
         .eq('status', 'online')
         .order('created_at', { ascending: true });
+
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
 
       if (!error && data) {
         setPublicApps(data);
@@ -92,8 +96,13 @@ export default function GuestDashboard() {
           </div>
         ) : publicApps.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {publicApps.map((app) => (
-              <a href={app.app_url || "#"} target={app.app_url ? "_blank" : "_self"} rel="noreferrer" key={app.id} className="block group">
+            {publicApps.map((app) => {
+              let targetUrl = app.app_url || "#";
+              if (targetUrl !== "#" && session?.access_token) {
+                targetUrl = `${targetUrl}#sso_token=${session.access_token}`;
+              }
+              return (
+              <a href={targetUrl} target={app.app_url ? "_blank" : "_self"} rel="noreferrer" key={app.id} className="block group">
                 <div className="glass-card p-6 rounded-2xl border border-white/10 hover:border-white/30 transition-all duration-300 h-full flex flex-col hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#1E5EFF]/10">
                   <div className="flex justify-between items-start mb-6">
                     <div className="w-14 h-14 bg-white/5 rounded-2xl border border-white/10 shadow-inner group-hover:scale-110 transition-transform duration-300 flex items-center justify-center overflow-hidden">
@@ -111,7 +120,8 @@ export default function GuestDashboard() {
                   </div>
                 </div>
               </a>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="py-10 text-center glass-panel rounded-2xl">

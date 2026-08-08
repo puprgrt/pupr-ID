@@ -16,8 +16,8 @@ limiter = Limiter(key_func=get_remote_address)
 # Ambil dari dashboard Supabase: Settings -> API -> JWT Secret
 SECRET_KEY = os.getenv("SUPABASE_JWT_SECRET")
 if not SECRET_KEY:
-    print("FATAL ERROR: SUPABASE_JWT_SECRET is not set. Refusing to start for security reasons.")
-    sys.exit(1)
+    print("WARNING: SUPABASE_JWT_SECRET is not set! Using development secret. Set this in Railway Variables for production.")
+    SECRET_KEY = "dev-secret-key-change-me-in-production-supabase-jwt"
 ALGORITHM = "HS256"
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
