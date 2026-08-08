@@ -36,6 +36,30 @@ def health_check():
     return {"status": "healthy", "service": "API Gateway", "timestamp": time.time()}
 
 # -----------------
+# OIDC DISCOVERY / REALM ENDPOINT
+# -----------------
+@app.get("/realms/{realm}/.well-known/openid-configuration")
+def get_openid_configuration(realm: str, request: Request):
+    """ Endpoint OIDC Discovery standar untuk Realm SSO PUPR-ID """
+    base_url = str(request.base_url).rstrip("/")
+    realm_url = f"{base_url}/realms/{realm}"
+    
+    return {
+        "issuer": realm_url,
+        "authorization_endpoint": f"{realm_url}/protocol/openid-connect/auth",
+        "token_endpoint": f"{realm_url}/protocol/openid-connect/token",
+        "userinfo_endpoint": f"{base_url}/api/v1/userinfo",
+        "jwks_uri": f"{realm_url}/protocol/openid-connect/certs",
+        "response_types_supported": ["code", "token", "id_token", "code id_token"],
+        "subject_types_supported": ["public"],
+        "id_token_signing_alg_values_supported": ["RS256"],
+        "scopes_supported": ["openid", "profile", "email", "roles"],
+        "token_endpoint_auth_methods_supported": ["client_secret_basic", "client_secret_post"],
+        "claims_supported": ["sub", "iss", "auth_time", "name", "preferred_username", "email", "role"]
+    }
+
+
+# -----------------
 # PROTECTED ROUTES
 # -----------------
 
