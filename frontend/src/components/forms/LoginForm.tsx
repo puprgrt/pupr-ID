@@ -6,7 +6,12 @@ import { ArrowRight } from 'lucide-react'
 import { login } from '@/app/login/actions'
 import { Turnstile } from '@marsidev/react-turnstile'
 
-export default function LoginForm() {
+interface LoginFormProps {
+  clientId?: string;
+  redirectUrl?: string;
+}
+
+export default function LoginForm({ clientId, redirectUrl }: LoginFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [turnstileToken, setTurnstileToken] = useState<string>('')
   const [isPending, startTransition] = useTransition()
@@ -34,6 +39,10 @@ export default function LoginForm() {
           {error}
         </div>
       )}
+      
+      {/* Hidden fields for SSO redirect flow */}
+      {clientId && <input type="hidden" name="client_id" value={clientId} />}
+      {redirectUrl && <input type="hidden" name="redirect_url" value={redirectUrl} />}
       
       <div className="space-y-2">
         <label className="text-sm font-medium text-slate-300 ml-1">NIP / Username</label>
@@ -79,7 +88,7 @@ export default function LoginForm() {
         disabled={isPending}
         className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#1E5EFF] hover:bg-[#173D90] disabled:bg-[#173D90]/50 disabled:cursor-not-allowed text-white rounded-xl font-medium shadow-[0_0_15px_rgba(30,94,255,0.4)] hover:shadow-[0_0_20px_rgba(30,94,255,0.6)] hover:-translate-y-0.5 transition-all duration-300 group"
       >
-        {isPending ? 'Memproses...' : 'Login ke Portal'}
+        {isPending ? 'Memproses...' : (clientId ? 'Otorisasi & Masuk' : 'Login ke Portal')}
         {!isPending && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
       </button>
     </form>

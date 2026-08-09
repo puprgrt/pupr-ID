@@ -2,7 +2,17 @@ import Link from "next/link";
 import { QrCode, Smartphone, Info, ShieldCheck, Map, Building2, HardHat, FileText, ArrowRight } from "lucide-react";
 import LoginForm from "@/components/forms/LoginForm";
 import GoogleLoginButton from "@/components/forms/GoogleLoginButton";
-export default function LoginPage() {
+
+interface LoginPageProps {
+  searchParams: {
+    client_id?: string;
+    redirect_url?: string;
+    response_type?: string;
+    error?: string;
+  };
+}
+
+export default function LoginPage({ searchParams }: LoginPageProps) {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row overflow-hidden bg-[#071A3D]">
 
@@ -100,10 +110,20 @@ export default function LoginPage() {
 
           <div className="mb-8 text-center">
             <img src="/logo-puprID.png" alt="PUPR-ID" className="h-60 mx-auto w-auto mb-4 object-contain" />
+            {searchParams?.client_id && (
+              <div className="mt-4 p-2 bg-[#1E5EFF]/10 border border-[#1E5EFF]/30 rounded-lg">
+                <p className="text-sm text-[#56CCF2] font-medium">
+                  Masuk untuk melanjutkan ke aplikasi {searchParams.client_id}
+                </p>
+              </div>
+            )}
             <p className="text-sm text-slate-400 mt-2">Masukkan kredensial Anda untuk masuk ke sistem terpusat DPUPR Kab. Garut.</p>
           </div>
 
-          <LoginForm />
+          <LoginForm 
+            clientId={searchParams?.client_id} 
+            redirectUrl={searchParams?.redirect_url} 
+          />
 
           <div className="mt-8">
             <div className="relative">

@@ -47,7 +47,7 @@ export async function login(formData: FormData) {
     email = `${email}@pupr.garut.id`
   }
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   })
@@ -60,7 +60,39 @@ export async function login(formData: FormData) {
     return { error: error.message }
   }
 
-  // Revalidasi dan redirect ke dashboard jika sukses
+  // Handle SSO redirect flow if parameters are present
+  const clientId = formData.get('client_id') as string
+  const redirectUrl = formData.get('redirect_url') as string
+  
+  if (clientId && redirectUrl) {
+    // Import dynamically to avoid circular dependencies or edge runtime issues
+    const { validateClientRedirect, generateSSOToken } = await import('@/lib/sso-clients')
+    
+    if (validateClientRedirect(clientId, redirectUrl)) {
+      // Data user dari session yang baru dibuat
+      const user = data.user
+      
+      const userData = {
+        id: user.id,
+        nip: rawUsername, // NIP asli sebelum di-append domain
+        fullName: user.user_metadata?.full_name || 'User PUPR',
+        email: user.email,
+        role: user.user_metadata?.role || 'User',
+      }
+      
+      const ssoToken = await generateSSOToken(userData)
+      
+      // Construct redirect URL with token
+      // Append rawUsername to token string so SIPEKA's fallback mock logic (tokenOrCode.includes(nip)) works
+      const url = new URL(redirectUrl)
+      url.searchParams.set('token', `${ssoToken}___${rawUsername}`)
+      url.searchParams.set('user_nip', rawUsername)
+      
+      redirect(url.toString())
+    }
+  }
+
+  // Revalidasi dan redirect ke dashboard jika sukses (non-SSO flow)
   revalidatePath('/dashboard')
   redirect('/dashboard')
 }
